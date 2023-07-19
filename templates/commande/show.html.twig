@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+    <h1>Commande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ commande.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ commande.user.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+    <div class="card text-white bg-secondary mb-3" style="max-width: 30rem;">
+        <div class="card-header">Products</div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for commandeProduct in commande.commandeProducts %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ commandeProduct.product.name }}
+                    <span class="badge bg-secondary rounded-pill">{{ commandeProduct.quantity }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <a href="{{ path('app_commande_index') }}">back to list</a>
+
+    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
+
+    {{ include('commande/_delete_form.html.twig') }}
+{% endblock %}

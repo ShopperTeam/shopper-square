@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PublicHomepageController!{% endblock %}
+
+{% block body %}
+    <h1>public homepage</h1>
+
+    <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+        <div class="card-body">
+            <div {{ vue_component('MyComponent', { 'name': 'Zizoo' }) }}></div>
+        </div>
+    </div>
+
+
+{% endblock %}
