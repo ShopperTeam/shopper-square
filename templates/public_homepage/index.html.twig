@@ -3,6 +3,8 @@
 {% block title %}Hello PublicHomepageController!{% endblock %}
 
 {% block body %}
+
+
     <h1>public homepage</h1>
 
     <h2>hello de David</h2>
@@ -15,6 +17,34 @@
             <div {{ vue_component('MyComponent', { 'name': 'Zizoo' }) }}></div>
         </div>
     </div>
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in featured_products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td><img src="{{ product.photo }}" alt="" width="300"></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 
 
 {% endblock %}
