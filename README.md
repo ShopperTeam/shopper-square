@@ -430,3 +430,70 @@ CommandeType : User
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*************************************************************************************************
+*********           TRAVAIL EN EQUIPE            ************************************************
+*************************************************************************************************
+
+
+Récupérer le projet depuis le dépot git:
+****************************************
+git clone https://github.com/ShopperTeam/shopper-square.git
+
+
+installer les composants du back :
+********************************
+compoer install
+
+
+installer les composants du front :
+***********************************
+npm install
+
+
+
+dans le fichier .env.local :
+**************************************
+DATABASE_URL="mysql://root:@127.0.0.1:3306/m2i_shopper_square?serverVersion=8.0.32&charset=utf8mb4"
+
+
+
+
+créer notre nouvelle base de données :
+***************************************
+php bin/console doctrine:database:create
+
+
+
+migrer la structure de nos données:
+************************************
+php bin/console doctrine:migrations:migrate
+
+
+
+charger nos données de test:
+****************************
+php bin/console doctrine:fixtures:load
+
+
+
+
+
+
+
+
+
+
