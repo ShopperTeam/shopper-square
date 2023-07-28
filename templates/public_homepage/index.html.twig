@@ -7,6 +7,7 @@
 
     <h1>public homepage</h1>
     
+
     <h2 class="mt-5">Featured Products :</h2>
     <div class="d-flex justify-content-center flex-wrap">
         {% for product in featured_products %}
@@ -14,9 +15,9 @@
             <div class="card-body">
                 <div {{ vue_component('ProductItem', {
                     'name': product.name,
-                    'description': product.description, 
-                    'price': product.price, 
-                    'photo': product.photo, 
+                    'description': product.description,
+                    'price': product.price,
+                    'photo': product.photo,
                 }) }}></div>
             </div>
         </div>
