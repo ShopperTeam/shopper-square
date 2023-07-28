@@ -456,7 +456,7 @@ git clone https://github.com/ShopperTeam/shopper-square.git
 
 installer les composants du back :
 ********************************
-compoer install
+composer install
 
 
 installer les composants du front :
