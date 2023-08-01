@@ -5,6 +5,17 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app_site_name: 'Shopper Square'
+    app_site_url: 'shoppersquare.com'
+    app_site_contact_address: '1 Rue de la paix 75018 Paris'
+    app_site_contact_email: 'contact@shoppersquare.com'
+    app_site_contact_phone: '01 23 45 67 78'
+    app_site_contact_fax: '04 23 45 67 78'
+    app_site_social_youtube_url: 'https://youtube.com/shoppersquare'
+    app_site_social_facebook_url: 'https://facebook.com/shoppersquare'
+    app_site_social_twitter_url: 'https://twitter.com/shoppersquare'
+    app_site_social_instagram_url: 'https://instagram.com/shoppersquare'
+    app_site_social_linkedin_url: 'https://linkedin.com/shoppersquare'
+    app_site_social_github_url: 'https://github.com/shoppersquare'
 
 services:
     # default configuration for services in *this* file

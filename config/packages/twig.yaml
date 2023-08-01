@@ -3,6 +3,17 @@ twig:
 
     globals:
         app_site_name: '%app_site_name%'
+        app_site_url: '%app_site_url%'
+        app_site_contact_address: '%app_site_contact_address%'
+        app_site_contact_email: '%app_site_contact_email%'
+        app_site_contact_phone: '%app_site_contact_phone%'
+        app_site_contact_fax: '%app_site_contact_fax%'
+        app_site_social_youtube_url: '%app_site_social_youtube_url%'
+        app_site_social_facebook_url: '%app_site_social_facebook_url%'
+        app_site_social_twitter_url: '%app_site_social_twitter_url%'
+        app_site_social_instagram_url: '%app_site_social_instagram_url%'
+        app_site_social_linkedin_url: '%app_site_social_linkedin_url%'
+        app_site_social_github_url: '%app_site_social_github_url%'
 
 
 when@test:
