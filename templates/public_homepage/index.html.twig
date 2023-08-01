@@ -3,15 +3,31 @@
 {% block title %}Hello PublicHomepageController!{% endblock %}
 
 {% block body %}
+
+
     <h1>public homepage</h1>
+    
 
-    <h2>hello de David</h2>
-
-    <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
-        <div class="card-body">
-            <div {{ vue_component('MyComponent', { 'name': 'Zizoo' }) }}></div>
+    <h2 class="mt-5">Featured Products :</h2>
+    <div class="d-flex justify-content-center flex-wrap">
+        {% for product in featured_products %}
+        <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+            <div class="card-body">
+                <div {{ vue_component('ProductItem', {
+                    'name': product.name,
+                    'description': product.description,
+                    'price': product.price,
+                    'photo': product.photo,
+                }) }}></div>
+            </div>
         </div>
+        {% endfor %}
+
     </div>
+
+
+
+
 
 
 {% endblock %}

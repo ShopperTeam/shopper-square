@@ -28,6 +28,11 @@ class ProductFixtures extends Fixture
             $product->setDescription($this->faker->paragraph($nbSentences = 5, $variableNbSentences = true));
             $product->setPrice($this->faker->randomFloat($nbMaxDecimals = 2, $min = 10, $max = 500));
             $product->setPhoto($photo);
+            
+            if($i <= 4) {
+                $product->setFeatured(true);
+            }
+
             $this->addReference('product_'.$i, $product);
 
             $manager->persist($product);
