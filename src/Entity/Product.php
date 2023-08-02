@@ -31,6 +31,9 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?bool $featured = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $stock = null;
+
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Avis::class, orphanRemoval: true)]
     private Collection $avis;
 
@@ -130,6 +133,18 @@ class Product
                 $avi->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): static
+    {
+        $this->stock = $stock;
 
         return $this;
     }
