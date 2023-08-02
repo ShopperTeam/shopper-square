@@ -10,12 +10,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 #[AsCommand(
     name: 'app:install',
-    description: "Netoyage et installation des dependences, migration et fixtures.",
+    description: "Installations des dependences, migration et fixtures.",
 )]
 class InstallCommand extends Command
 {
@@ -31,44 +30,25 @@ class InstallCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
 
+        // show logo project
         $io->text("
         ███████╗██╗  ██╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗       ███████╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ███████╗
         ██╔════╝██║  ██║██╔═══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗      ██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔══██╗██╔════╝
         ███████╗███████║██║   ██║██████╔╝██████╔╝█████╗  ██████╔╝█████╗███████╗██║   ██║██║   ██║███████║██████╔╝█████╗  
         ╚════██║██╔══██║██║   ██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗╚════╝╚════██║██║▄▄ ██║██║   ██║██╔══██║██╔══██╗██╔══╝  
         ███████║██║  ██║╚██████╔╝██║     ██║     ███████╗██║  ██║      ███████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║███████╗
-        ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝      ╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
-                                                                                                                         
+        ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝      ╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝                                                                                                               
         ");
-        // $arg1 = $input->getArgument('arg1');
-
-        // if ($arg1) {
-        //     $io->note(sprintf('You passed an argument: %s', $arg1));
-        // }
-
-        // if ($input->getOption('option1')) {
-        //     // ...
-        // }
-
-        $filesystem = new Filesystem();
-
-        // // Remove node_modules if it exists
-        // if ($filesystem->exists('node_modules')) {
-        //     $filesystem->remove(['node_modules'], true);
-        //     $io->success('Supression du dossier node_modules.');
-        // }
 
 
-        // $io->success('Netoyage accompli.');
-
-        // Install npm and composer dependencies
-
+        // install npm dependencies
         $io->info('Installation des dépendances npm...');
         $io->text('>> npm install');
         $process = new Process(['npm', 'install']);
         $process->run();
 
 
+        // install composer dependencies
         $io->info('Installation des dépendances composer...');
         $io->text('>> composer install');
         $process = new Process(['composer', 'install']);
@@ -78,11 +58,13 @@ class InstallCommand extends Command
         $io->success('Dependences installer.');
 
 
+        // Create database
         $io->info('Creation de la base de donnée...');
         $doctrineCommand = $this->getApplication()->find('doctrine:database:create');
         $doctrineCommand->run($input, $output);
 
 
+        // apply migrations
         $io->info('insallation des migrations...');
         $doctrineCommand = $this->getApplication()->find('doctrine:migrations:migrate');
         $migrationsInput = new ArrayInput([
@@ -92,7 +74,7 @@ class InstallCommand extends Command
         $doctrineCommand->run($migrationsInput, $output);
 
 
-
+        // apply fixtures
         $io->info('insallation des fixtures...');
         $doctrineCommand = $this->getApplication()->find('doctrine:fixtures:load');
         $migrationsInput = new ArrayInput([
