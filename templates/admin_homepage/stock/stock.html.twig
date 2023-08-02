@@ -12,13 +12,14 @@
 
             <div class="alert alert-danger">
                  Le stock de {{product.name}} est proche d'être vide ! il n'y a plus que {{product.stock}} exemplaire(s), il va falloir refaire du stock !
+                 <a href="{{ path('app_product_show', {'id': product.id}) }}">Voir le produit</a>
             </div>  
 
-        {% elseif product.stock > 50 %}
+        {# {% elseif product.stock > 50 %}
 
                 <div class="alert alert-success">
                     Le stock de {{product.name}} est OK !
-                </div>
+                </div> #}
         {% endif %}
 
     {% endfor %}
