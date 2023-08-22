@@ -1,7 +1,111 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserHomepageController!{% endblock %}
+{% block title %}Hello UserHomepageController!
+{% endblock %}
 
 {% block body %}
-    <h1>UserHomepage</h1>
+	<div class="container-xxl">
+		<div class="row">
+			<h1>Bonjour,
+			</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam accumsan tortor non tellus porta sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</div>
+
+		<div class="row mb-3 text-start">
+			<div class="col-lg-6">
+				<div>
+					<p class="fw-bold">Mon identité</p>
+				</div>
+				<div>
+					<p>nickname</p>
+					<p>{{email}}</p>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div>
+					<p class="fw-bold">Adresse de livraison</p>
+				</div>
+				<div>
+					<p>Av de la France 5 91260 Juvisy France
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div>
+				<div>
+
+					<p class="fw-bold">Modifier nom utilisateur</p>
+				</div>
+				<form action="">
+					<div>
+						<label for="">Nouveau nom utilisateur</label>
+					</div>
+					<div><input type="text"></div>
+					<button>Sauvegarder</button>
+				</form>
+			</div>
+		</div>
+		<div class="row mb-3 text-start">
+			<div class="col-lg-6">
+				<form action="">
+					<div>
+						<p class="fw-bold">Modifier mon mot de passe
+						</p>
+					</div>
+					<div>
+						<div>
+							<label for="">Mot de passe actuel</label>
+						</div>
+						<div><input type="text"></div>
+					</div>
+					<div>
+						<div>
+							<label for="">Nouveau mot de passe</label>
+						</div>
+						<div><input type="text"></div>
+					</div>
+					<div>
+						<div>
+							<label for="">Comfirmer nouveau mot de passe</label>
+						</div>
+						<div><input type="text"></div>
+					</div>
+					<div>
+						<button>Sauvegarder</button>
+					</div>
+				</form>
+
+			</div>
+			<div class="col-lg-6">
+				<form action="">
+					<div>
+						<p class="fw-bold">Modifier mon adresse mail</p>
+					</div>
+					<div>
+						<div>
+							<label for="">Mail actuel</label>
+						</div>
+						<div><input type="text"></div>
+					</div>
+					<div>
+						<div>
+							<label for="">Nouvelle adresse mail</label>
+						</div>
+						<div><input type="text"></div>
+					</div>
+					<div>
+						<div>
+							<label for="">Confirmez adresse mail</label>
+						</div>
+						<div><input type="text"></div>
+					</div>
+					<div>
+						<button>Sauvegarder</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
 {% endblock %}
