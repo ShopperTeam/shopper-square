@@ -489,13 +489,51 @@ charger nos données de test:
 php bin/console doctrine:fixtures:load
 Farnoosh
 
-Hakim
+# Commandes Symphony/shopper-square
 
+## COMMANDE >> app:install
+Cette commande permet de faire les choses suivante successivement:
+    
+* Installation des dépendances npm...
+    ```bash
+        npm install
+    ```
+* Installation des dépendances composer...
+    ```bash
+        composer install
+    ```
+* Creation de la base de donnée
+    ```bash
+        doctrine:database:create
+    
+    ```
+* insallation des migrations
+    ```bash
+        doctrine:migrations:migrate
+    
+    ```
 
-SILIGBONON
+* insallation des fixtures
+    ```bash
+        doctrine:fixtures:load
+    
+    ```
 
+## COMMANDE >> app:run-dev
 
+Cette commande permet de lancer les outils de développements en une commande.
+voici les trois commandes qui sont executer chaqu'une sur un terminal:
+```bash
+    symfony server:start
 
+```
+```bash
+    npm run dev-server
 
+```
 
-Farnoosh 2
+```bash
+    npm run watch
+
+```
+
