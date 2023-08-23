@@ -519,12 +519,16 @@ Cette commande permet de faire les choses suivante successivement:
     
     ```
 
-## COMMANDE >> app:run-dev
+## COMMANDE >> app:start
 
 Cette commande permet de lancer les outils de développements en une commande.
-voici les trois commandes qui sont executer chaqu'une sur un terminal:
+voici les commandes qui sont executer chaqu'une sur un terminal:
 ```bash
     symfony server:start
+
+```
+```bash
+    npm run build
 
 ```
 ```bash

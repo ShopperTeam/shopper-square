@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 
 #[AsCommand(
-    name: 'app:run-dev',
+    name: 'app:start',
     description: 'Start development tools: Symfony, npm dev-server, npm watch',
 )]
 class RunDevCommand extends Command
@@ -42,6 +42,8 @@ class RunDevCommand extends Command
 
         $this->launchInNewTerminal('symfony server:start', 'Symfony Server');
 
+        $this->launchInNewTerminal('npm run build', 'npm build');
+
         $this->launchInNewTerminal('npm run dev-server', 'npm dev-server');
 
         $this->launchInNewTerminal('npm run watch', 'npm watch');
@@ -51,7 +53,7 @@ class RunDevCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function launchInNewTerminal($command, $title)
+    private function launchInNewTerminal($command, $title, $autoClose = true)
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $process = new Process([
@@ -60,10 +62,11 @@ class RunDevCommand extends Command
                 'start',
                 'cmd.exe',
                 '/K',
-                'title ' . $title . ' && ' . $command
+                'title ' . $title . ' && ' . $command . ($autoClose ? ' && exit' : '')
             ]);
         } else {
-            $process = new Process(['gnome-terminal', '--', 'bash', '-c', $command]);
+            $commandWithExit = $command . ($autoClose ? ' && exit' : '');
+            $process = new Process(['gnome-terminal', '--', 'bash', '-c', $commandWithExit]);
         }
 
         $process->setTimeout(null);
