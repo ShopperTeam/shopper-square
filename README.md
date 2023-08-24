@@ -491,9 +491,31 @@ Farnoosh
 
 # Commandes Symphony/shopper-square
 
+
+## COMMANDE >> app:config-env
+Cette commande permet de créer le fichier .env.local s'il n'existe pas et de manière interactive rajouter la phrase de connection.
+- Options:
+    ```bash 
+        -f, --force         Create .env.local from scratch even if it exists
+          --no-logo         Dont show logo.
+    ```
+
 ## COMMANDE >> app:install
 Cette commande permet de faire les choses suivante successivement:
+
+verifier si le fichier .env.local exist:
     
+-   si le fichier n'existe pas, on vous aide a le créer en lancant la commande suivante pour vous:
+        
+    ```bash
+        symfony console app:config-env 
+    ```
+    
+    et par la suite vous invite a relancer l'installation avec cette fois la bonne configuration.
+    
+
+
+si le fichier .env.local existe alors on continue avec:    
 * Installation des dépendances npm...
     ```bash
         npm install
@@ -519,12 +541,16 @@ Cette commande permet de faire les choses suivante successivement:
     
     ```
 
-## COMMANDE >> app:run-dev
+## COMMANDE >> app:start
 
 Cette commande permet de lancer les outils de développements en une commande.
-voici les trois commandes qui sont executer chaqu'une sur un terminal:
+voici les commandes qui sont executer chaqu'une sur un terminal:
 ```bash
     symfony server:start
+
+```
+```bash
+    npm run build
 
 ```
 ```bash
