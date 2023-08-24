@@ -6,6 +6,7 @@
 
 namespace App\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -15,6 +16,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Exception\PathException;
 
 #[AsCommand(
     name: 'app:install',
@@ -22,28 +28,33 @@ use Symfony\Component\Process\Process;
 )]
 class InstallCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
-    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
+        $io->text($this->getLogo());
 
-        // show logo project
-        $io->text("
-        ███████╗██╗  ██╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗       ███████╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ███████╗
-        ██╔════╝██║  ██║██╔═══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗      ██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔══██╗██╔════╝
-        ███████╗███████║██║   ██║██████╔╝██████╔╝█████╗  ██████╔╝█████╗███████╗██║   ██║██║   ██║███████║██████╔╝█████╗  
-        ╚════██║██╔══██║██║   ██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗╚════╝╚════██║██║▄▄ ██║██║   ██║██╔══██║██╔══██╗██╔══╝  
-        ███████║██║  ██║╚██████╔╝██║     ██║     ███████╗██║  ██║      ███████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║███████╗
-        ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝      ╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝                                                                                                               
-        ");
 
+        // check if .env.local exist if not, this will help you create one.
+        if (!$this->checkEnvLocal($input, $output)) {
+            $io->info('création du fichier .env.local');
+            $doctrineCommand = $this->getApplication()->find('app:config-env');
+            $migrationsInput = new ArrayInput([
+                'command' => 'app:config-env',
+                '--no-logo' => true,
+            ]);
+            if (!$this->checkEnvLocal($input, $output)) {
+                $io->success("La configuration de l'environnement a été mise à jour. Pour terminer l'installation, exécutez la commande suivante :");
+                $io->text("php bin/console app:install");
+                return Command::SUCCESS;
+            }else{
+                $io->error("La configuration de l'environnement a échoué. Pour terminer l'installation, exécutez les commandes suivante dans l'ordre:");
+                $io->text("php bin/console app:config-env");
+                $io->text("php bin/console app:install");
+                return Command::FAILURE;
+            }
+        }
 
         // install npm dependencies
         $io->info('Installation des dépendances npm...');
@@ -62,10 +73,23 @@ class InstallCommand extends Command
         $io->success('Dependences installer.');
 
 
+
+        try {
+            $dotenv = new Dotenv();
+            $dotenv->load('.env.local');
+        } catch (PathException $e) {
+            $io->error(".env.local read error: $e");
+        }
+
         // Create database
         $io->info('Creation de la base de donnée...');
         $doctrineCommand = $this->getApplication()->find('doctrine:database:create');
-        $doctrineCommand->run($input, $output);
+        $doctrineInput = new ArrayInput([
+            'command' => 'doctrine:database:create',
+            '--if-not-exists' => true,
+            '--connection' => 'default'
+        ]);
+        $doctrineCommand->run($doctrineInput, $output);
 
 
         // apply migrations
@@ -88,9 +112,26 @@ class InstallCommand extends Command
         $doctrineCommand->run($migrationsInput, $output);
 
 
-
-
         $io->success("Installation terminée.");
         return Command::SUCCESS;
+    }
+
+    protected function checkEnvLocal(): bool
+    {
+        $filesystem = new Filesystem();
+        return $filesystem->exists('.env.local');
+    }
+
+    protected function getLogo(): string
+    {
+        // show logo project
+        return "
+        ███████╗██╗  ██╗ ██████╗ ██████╗ ██████╗ ███████╗██████╗       ███████╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ███████╗
+        ██╔════╝██║  ██║██╔═══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗      ██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔══██╗██╔════╝
+        ███████╗███████║██║   ██║██████╔╝██████╔╝█████╗  ██████╔╝█████╗███████╗██║   ██║██║   ██║███████║██████╔╝█████╗  
+        ╚════██║██╔══██║██║   ██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗╚════╝╚════██║██║▄▄ ██║██║   ██║██╔══██║██╔══██╗██╔══╝  
+        ███████║██║  ██║╚██████╔╝██║     ██║     ███████╗██║  ██║      ███████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║███████╗
+        ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝      ╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝                                                                                                               
+        ";
     }
 }
