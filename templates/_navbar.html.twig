@@ -3,7 +3,7 @@
 
         <a class="navbar-brand" href="{{ path('app_public_homepage') }}">
             <i class="fa-regular fa-star text-warning fa-lg"></i>
-            SHOP SQUARE
+            {{ app_site_name }}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02"
             aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,12 +13,12 @@
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_public_homepage') }}">
-                        Home
+                        {{ 'home'|trans|capitalize }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_product_index') }}">
-                        Products
+                        {{ 'products'|trans|capitalize }}
                     </a>
                 </li>
                 <li class="nav-item">
@@ -37,11 +37,14 @@
                     </a>
                 </li>
             </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-                </li>
-            </ul>
+
+            {% if not is_granted('ROLE_USER') %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                    </li>
+                </ul>
+            {% endif %}
 
         </div>
     </div>
